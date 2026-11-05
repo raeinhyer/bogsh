@@ -1,5 +1,3 @@
-# A Little Something for You
-
 **November 6, 2009.**
 
 The day that Edmer made his debut into this little universe.
