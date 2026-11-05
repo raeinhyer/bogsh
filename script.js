@@ -1222,23 +1222,23 @@ const REQUIRE_ALL_MEMORIES = true;
 const MEMORIES = [
   {
     id: 'talk',  sprite: 'bubble', x: 24, y: 25, size: 2.6,
-    title: 'WHERE IT ALL STARTED',
-    text: 'Who would've thought that meeting through Minecraft would lead me here? HIHI.'
+    title: `WHERE IT ALL STARTED`,
+    text: `Who would've thought that meeting through Minecraft would lead me here? HIHI.`
   },
   {
     id: 'song',  sprite: 'note',   x: 76, y: 31, size: 2.1,
-    title: 'YOUR VOICE',
-    text: 'Is one of my favorite sounds. I still remember our calls, especially those nights when ikaw lang halos nagsasalita.'
+    title: `YOUR VOICE`,
+    text: `Is one of my favorite sounds. I still remember our calls, especially those nights when ikaw lang halos nagsasalita.`
   },
   {
     id: 'heart', sprite: 'heart',  x: 25, y: 52, size: 2.4,
-    title: 'THE LITTLE THINGS YOU DO',
-    text: 'Your random messages, the things you share about your day, the way you check up on me, and even the little things you probably think I dont notice.'
+    title: `THE LITTLE THINGS YOU DO`,
+    text: `Your random messages, the things you share about your day, the way you check up on me, and even the little things you probably think I dont notice.`
   },
   {
     id: 'moon',  sprite: 'moon',   x: 75, y: 56, size: 2.3,
-    title: 'SOMETHING I AM GRATEFUL FOR',
-    text: 'You brought me closer to God.'
+    title: `SOMETHING I AM GRATEFUL FOR`,
+    text: `You brought me closer to God.`
   }
 ];
 
