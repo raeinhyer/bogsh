@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <!-- viewport-fit=cover lets the app use the full phone screen (notches etc.) -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
+  <meta name="theme-color" content="#07050f" />
+  <!-- A personal gift: ask search engines not to list it -->
+  <meta name="robots" content="noindex, nofollow" />
+  <!-- Tiny heart icon so browsers don't look for a favicon file -->
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 7 6' shape-rendering='crispEdges'%3E%3Cpath fill='%23ff3b5c' d='M1 0h2v1h1V0h2v1h1v2H6v1H5v1H4v1H3V5H2V4H1V3H0V1h1z'/%3E%3C/svg%3E" />
+  <title>Play this, cutie</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- =========================================================
+       APP SHELL
+       Every screen is a <section class="screen" data-screen="name">.
+       Only one screen has the class "is-active" at a time.
+       Any element with data-goto="name" switches to that screen.
+       ========================================================= -->
+  <main id="app">
+
+    <!-- ===================== SCREEN 1: OPENING ===================== -->
+    <section class="screen screen--opening is-active" data-screen="opening" aria-label="Opening">
+
+      <!-- Background layers (decorative, hidden from screen readers) -->
+      <div class="opening__sky" aria-hidden="true">
+        <div class="stars" id="stars"></div>
+        <div class="moon"></div>
+        <div class="searchlight"></div>
+      </div>
+
+      <svg class="web-corner web-corner--tl" viewBox="0 0 100 100" aria-hidden="true"></svg>
+      <svg class="web-corner web-corner--tr" viewBox="0 0 100 100" aria-hidden="true"></svg>
+
+      <!-- The hero swinging on a web: a thin web line + the picture in assets/images/hero.png.
+           To change the hero, replace that image (keep the little thread stub at the top center). -->
+      <div class="hero" aria-hidden="true">
+        <span class="hero__thread"></span>
+        <img class="hero__img" src="assets/images/hero.png" alt="" width="256" height="365" />
+      </div>
+
+      <div class="particles" id="particles" aria-hidden="true"></div>
+
+      <!-- Main text + button -->
+      <div class="opening__content">
+        <h1 class="opening__title">
+          <span class="opening__title-line">HEY,</span>
+          <span class="opening__title-line opening__title-line--hero">SPIDER-MAN!</span>
+        </h1>
+        <p class="opening__subtext">
+          You've got a mission.<br />
+          <span class="accent">And no, you can't skip this one :p</span>
+        </p>
+        <button class="btn btn--primary opening__button" type="button" data-goto="briefing">
+          ACCEPT MISSION
+        </button>
+      </div>
+
+      <!-- City skyline (buildings are drawn by script.js from a simple list) -->
+      <div class="skyline" aria-hidden="true">
+        <svg viewBox="0 0 400 200" preserveAspectRatio="xMidYMax slice">
+          <g id="city-back"></g>
+          <g id="city-front"></g>
+          <g id="city-windows"></g>
+        </svg>
+      </div>
+    </section>
+
+    <!-- ===================== SCREEN 2: MISSION BRIEFING =====================
+         The style="--d:..." on each .reveal element is its entrance delay.
+         All the mission text can be edited right here. -->
+    <section class="screen screen--briefing" data-screen="briefing" aria-label="Mission briefing">
+
+      <svg class="web-corner web-corner--tl" viewBox="0 0 100 100" aria-hidden="true"></svg>
+      <svg class="web-corner web-corner--tr" viewBox="0 0 100 100" aria-hidden="true"></svg>
+
+      <div class="briefing__scroll">
+
+        <article class="briefing__file">
+          <span class="briefing__stamp" aria-hidden="true">CLASSIFIED</span>
+
+          <h2 class="briefing__title reveal" style="--d: 0.2s">MISSION 01</h2>
+
+          <p class="briefing__text reveal" style="--d: 0.6s">
+            Someone important is celebrating a birthday today.
+          </p>
+
+          <div class="briefing__objective reveal" style="--d: 1.1s">
+            <p class="briefing__label">YOUR OBJECTIVE:</p>
+            <p class="briefing__objective-text">Complete the mission.</p>
+          </div>
+
+          <dl class="briefing__stats">
+            <!-- Difficulty: 5 pips, add class "pip--on" to fill one -->
+            <div class="briefing__stat reveal" style="--d: 1.6s">
+              <dt>DIFFICULTY</dt>
+              <dd>
+                <span class="pips" role="img" aria-label="2 out of 5">
+                  <span class="pip pip--on"></span>
+                  <span class="pip pip--on"></span>
+                  <span class="pip"></span>
+                  <span class="pip"></span>
+                  <span class="pip"></span>
+                </span>
+              </dd>
+            </div>
+
+            <!-- Reward: a mystery -->
+            <div class="briefing__stat reveal" style="--d: 2s">
+              <dt>REWARD</dt>
+              <dd class="briefing__reward">
+                <span class="mystery-box" aria-hidden="true">?</span>
+                <span>TOP SECRET</span>
+              </dd>
+            </div>
+          </dl>
+        </article>
+
+        <button class="btn btn--primary briefing__start reveal" type="button" data-goto="hunt" style="--d: 2.5s">
+          START
+        </button>
+
+      </div>
+    </section>
+
+    <!-- ===================== SCREEN 3: WEB HUNT =====================
+         The city, the objects and the heart messages are built by script.js
+         (see HUNT_ITEMS and HEART_MESSAGES). -->
+    <section class="screen screen--hunt" data-screen="hunt" aria-label="Web hunt">
+
+      <!-- Counters + hint -->
+      <header class="hunt__hud">
+        <div class="hunt__counters">
+          <div class="hunt__counter" id="hunt-webs-counter">
+            <span class="sprite" data-sprite="web"></span>
+            <span id="hunt-webs">0/3</span>
+          </div>
+          <div class="hunt__counter" id="hunt-hearts-counter">
+            <span class="sprite" data-sprite="heart"></span>
+            <span id="hunt-hearts">0/3</span>
+          </div>
+        </div>
+        <p class="hunt__hint">Find 3 hidden webs and 3 hidden hearts. Not everything that glows is real.</p>
+      </header>
+
+      <!-- The scene -->
+      <div class="hunt__scene">
+        <div class="hunt__sky" aria-hidden="true">
+          <div class="stars" id="hunt-stars"></div>
+          <div class="moon hunt__moon"></div>
+        </div>
+        <div class="hunt__city" id="hunt-city" aria-hidden="true"></div>
+        <div class="hunt__ground" aria-hidden="true"></div>
+        <div class="hunt__items" id="hunt-items"></div>
+
+        <!-- Short message when you tap a fake / find a web -->
+        <p class="hunt__toast" id="hunt-toast" role="status" aria-live="polite"></p>
+      </div>
+
+      <!-- Pop-up shown when a heart is found -->
+      <div class="hunt__dialog" id="hunt-dialog">
+        <div class="hunt__dialog-box" role="dialog" aria-modal="true">
+          <span class="sprite" data-sprite="heart"></span>
+          <p class="hunt__dialog-tag" id="hunt-dialog-tag">HEART FOUND</p>
+          <p class="hunt__dialog-text" id="hunt-dialog-text"></p>
+          <button class="btn btn--primary" type="button" id="hunt-dialog-close">OK</button>
+        </div>
+      </div>
+
+      <!-- Shown when all 6 are found -->
+      <div class="hunt__complete" id="hunt-complete">
+        <h2 class="hunt__complete-title">MISSION COMPLETE</h2>
+        <button class="btn btn--primary hunt__complete-button" type="button" data-goto="minigame">
+          NEXT MISSION
+        </button>
+      </div>
+    </section>
+
+    <!-- ===================== SCREEN 4: MINI-GAME =====================
+         The game itself is drawn on the canvas by script.js (section 5). -->
+    <section class="screen screen--minigame" data-screen="minigame" aria-label="Mini-game">
+
+      <canvas class="mini__canvas" id="mini-canvas" aria-label="Web-swinging game"></canvas>
+
+      <!-- Counters + progress bar -->
+      <header class="mini__hud">
+        <div class="mini__counters">
+          <div class="mini__counter"><span class="sprite" data-sprite="heart"></span><span id="mini-hearts">0</span></div>
+          <div class="mini__counter"><span class="sprite" data-sprite="web"></span><span id="mini-webs">0</span></div>
+          <div class="mini__counter"><span class="sprite" data-sprite="star"></span><span id="mini-stars">0</span></div>
+        </div>
+        <div class="mini__progress" aria-hidden="true">
+          <div class="mini__progress-fill" id="mini-progress-fill"></div>
+        </div>
+      </header>
+
+      <!-- Instructions: tap anywhere to begin -->
+      <button class="mini__start is-open" id="mini-start" type="button">
+        <span class="mini__start-title">GET TO THE PARTY</span>
+        <span class="mini__start-text">HOLD to swing up.<br />LET GO to fall.<br />Grab hearts, webs and stars!</span>
+        <span class="mini__start-tap">TAP TO BEGIN</span>
+      </button>
+
+      <!-- Shown after reaching the destination -->
+      <div class="mini__finish" id="mini-finish">
+        <h2 class="mini__finish-title">YOU MADE IT.</h2>
+        <p class="mini__finish-text">But... there's something you haven't found yet.</p>
+        <button class="btn btn--primary mini__finish-button" type="button" data-goto="purple">
+          KEEP GOING
+        </button>
+      </div>
+    </section>
+
+    <!-- ===================== SCREEN 5: PURPLE TRANSITION =====================
+         The floating stars, hearts and glow dots are built by script.js. -->
+    <section class="screen screen--purple" data-screen="purple" aria-label="Purple surprise">
+      <div class="purple__glow" aria-hidden="true"></div>
+      <div class="stars" id="purple-stars" aria-hidden="true"></div>
+      <div class="purple__floaters" id="purple-floaters" aria-hidden="true"></div>
+
+      <div class="purple__content">
+        <p class="purple__wait">Wait...</p>
+        <p class="purple__text">don't close me yet</p>
+        <button class="btn btn--purple purple__button" type="button" data-goto="memory">OPEN</button>
+      </div>
+    </section>
+
+    <!-- ===================== SCREEN 6: PURPLE MEMORY ROOM =====================
+         The four memory objects are built by script.js. To change what each
+         memory says, edit the MEMORIES list at the start of script.js section 7. -->
+    <section class="screen screen--memory" data-screen="memory" aria-label="Memory room">
+      <div class="stars" id="memory-stars" aria-hidden="true"></div>
+      <div class="memory__lights" aria-hidden="true"></div>
+
+      <!-- Counter + hint -->
+      <header class="memory__hud">
+        <p class="memory__count"><span class="memory__count-label">MEMORIES</span> <span id="memory-count">0/4</span></p>
+        <p class="memory__hint" id="memory-hint">Tap the floating things to remember.</p>
+      </header>
+
+      <!-- The room -->
+      <div class="memory__room">
+        <div class="memory__items" id="memory-items"></div>
+        <div class="memory__floor" aria-hidden="true"></div>
+
+        <!-- Gift box: locked until every memory is opened -->
+        <button class="memory__gift" id="memory-gift" type="button" aria-label="Gift (locked)">
+          <span class="memory__gift-sprite"></span>
+          <span class="memory__gift-lock" aria-hidden="true">LOCKED</span>
+        </button>
+
+        <p class="memory__toast" id="memory-toast" role="status" aria-live="polite"></p>
+      </div>
+
+      <!-- Memory pop-up -->
+      <div class="memory__dialog" id="memory-dialog">
+        <div class="memory__dialog-box" role="dialog" aria-modal="true">
+          <span class="memory__dialog-sprite"></span>
+          <p class="memory__dialog-title" id="memory-dialog-title"></p>
+          <p class="memory__dialog-text" id="memory-dialog-text"></p>
+          <button class="btn btn--purple" type="button" id="memory-dialog-close">CLOSE</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== SCREEN 7: BIRTHDAY LETTER =====================
+         The letter TEXT is NOT here. Edit the LETTER object in script.js (section 8)
+         and it fills in the paper below automatically. -->
+    <section class="screen screen--letter" data-screen="letter" aria-label="Birthday letter">
+      <div class="stars" id="letter-stars" aria-hidden="true"></div>
+      <div class="letter__glow" aria-hidden="true"></div>
+
+      <!-- Step 1: the closed envelope -->
+      <div class="letter__stage">
+        <h2 class="letter__title">One last thing...</h2>
+
+        <button class="envelope" id="envelope" type="button" aria-label="Open the envelope">
+          <span class="envelope__back"></span>
+          <span class="envelope__card" aria-hidden="true">
+            <span class="envelope__line"></span>
+            <span class="envelope__line"></span>
+            <span class="envelope__line envelope__line--short"></span>
+          </span>
+          <span class="envelope__front"></span>
+          <span class="envelope__flap"></span>
+          <span class="envelope__seal" aria-hidden="true"></span>
+        </button>
+
+        <p class="letter__hint">TAP THE ENVELOPE</p>
+      </div>
+
+      <!-- Step 2: the letter itself (appears after the envelope opens) -->
+      <div class="letter__reading" id="letter-reading">
+        <div class="letter__paper-wrap">
+          <article class="letter__paper" id="letter-paper" tabindex="0">
+            <p class="letter__greeting" id="letter-greeting"></p>
+            <div id="letter-body"></div>
+            <p class="letter__closing" id="letter-closing"></p>
+            <p class="letter__signature" id="letter-signature"></p>
+          </article>
+          <span class="letter__fade" aria-hidden="true"></span>
+        </div>
+
+        <button class="btn btn--purple letter__continue" type="button" data-goto="finale">CONTINUE</button>
+      </div>
+    </section>
+
+    <!-- ===================== SCREEN 8: FINAL CELEBRATION =====================
+         The text is right here, edit it freely. The confetti, fireworks, hearts and
+         the hero are added by script.js (section 9). -->
+    <section class="screen screen--finale" data-screen="finale" aria-label="Final celebration">
+      <div class="finale__glow" aria-hidden="true"></div>
+      <div class="stars" id="finale-stars" aria-hidden="true"></div>
+
+      <svg class="web-corner web-corner--tl" viewBox="0 0 100 100" aria-hidden="true"></svg>
+      <svg class="web-corner web-corner--tr" viewBox="0 0 100 100" aria-hidden="true"></svg>
+
+      <!-- Hearts and purple glow dots drifting up -->
+      <div class="purple__floaters" id="finale-floaters" aria-hidden="true"></div>
+
+      <!-- The cute hero is copied in here by script.js -->
+      <div class="finale__hero-slot" id="finale-hero-slot" aria-hidden="true"></div>
+
+      <div class="finale__content">
+        <span class="finale__heart" id="finale-heart" aria-hidden="true"></span>
+        <h2 class="finale__title">
+          <span class="finale__line">HAPPY BIRTHDAY,</span>
+          <span class="finale__line finale__line--big">BABYYY!</span>
+        </h2>
+        <p class="finale__stamp">MISSION COMPLETED.</p>
+        <button class="btn btn--purple finale__again" type="button" data-goto="opening">PLAY AGAIN</button>
+      </div>
+
+      <!-- Confetti and fireworks are drawn into this layer; taps pass through it -->
+      <div class="finale__fx" id="finale-fx" aria-hidden="true"></div>
+    </section>
+
+    <!-- Wipe used when changing screens (kept inside the game frame) -->
+    <div class="transition" id="transition" aria-hidden="true"></div>
+
+  </main>
+
+  <!-- Only shown on a phone held sideways -->
+  <div class="rotate-hint" aria-hidden="true">
+    <span class="rotate-hint__icon">&#8635;</span>
+    <span>PLEASE ROTATE YOUR PHONE<br />TO PORTRAIT</span>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
